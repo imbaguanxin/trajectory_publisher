@@ -1,0 +1,8 @@
+/.idea/
+/build/
+/devel/
+/src/trajectory_publisher/cmake-build-debug
+*/.idea/
+/src/cmake-build-debug/
+/src/trajectory_publisher/.idea/
+/src/trajectory_publisher/cmake-build-debug/
