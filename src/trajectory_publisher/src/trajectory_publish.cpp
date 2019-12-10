@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     ros::Rate loop_rate(10);
     double initx = traj[0][1] / 100;
     double inity = traj[0][2] / 100;
-    while (ros::ok() && counter < traj.size()) {
+    while (ros::ok() && counter < traj.size()-50) {
         static geometry_msgs::Point pt;
         vector<double> row = traj[counter];
         double tempx = row[1] / 100;

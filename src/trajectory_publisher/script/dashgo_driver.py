@@ -22,7 +22,7 @@
 
 
 
-portname = "/dev/ttyUSB0" # the typical name of the E1's USB port, your maybe different
+portname = "/dev/ttyUSB1" # the typical name of the E1's USB port, your maybe different
 
 import rospy
 from geometry_msgs.msg import Twist
