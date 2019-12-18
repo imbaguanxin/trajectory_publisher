@@ -8,13 +8,13 @@
 
 using namespace std;
 
-const string fp = "/home/gg/catkin_gx_ws/src/trajectory_publisher/result.csv";
+const string fp = "/home/gg/catkin_gx_ws/src/trajectory_publisher/realexpMap1-astar.csv";
 
 ros::Publisher trajectory_pub;
 vector <vector<double>> traj;
-int counter = 0;
 
-void csvParser(string filename, vector <vector<double>> &result) {
+
+void csvParser(const string &filename, vector <vector<double>> &result) {
     ROS_INFO("Starting reading from file.");
     ifstream in;
     in.open(filename);
@@ -36,23 +36,48 @@ void csvParser(string filename, vector <vector<double>> &result) {
 }
 
 int main(int argc, char **argv) {
+	int counter = 0;
+	float hz = 10;
     ros::init(argc, argv, "publish_tragectory");
     ros::NodeHandle nh;
     trajectory_pub = nh.advertise<geometry_msgs::Point>("ring_buffer/desire_point", 10);
     csvParser(fp, traj);
     ROS_INFO("start publishing");
-    ros::Rate loop_rate(10);
-    double initx = traj[0][1] / 100;
-    double inity = traj[0][2] / 100;
-    while (ros::ok() && counter < traj.size()-50) {
+    ROS_INFO("FILE name:");
+    ROS_INFO_STREAM(fp);
+    ros::Rate loop_rate(hz);
+    double initx = traj[0][0] / 100;
+    double inity = traj[0][1] / 100;
+    while (ros::ok() && counter < hz * 5) {
+    	ROS_INFO("waiting");
+    	counter++;
+    	loop_rate.sleep();
+    }
+    counter = 0;
+    while (ros::ok() && counter < traj.size()) {
+    	// ROS_INFO("in loop");
         static geometry_msgs::Point pt;
-        vector<double> row = traj[counter];
-        double tempx = row[1] / 100;
-        double tempy = row[2] / 100;
-        pt.y = tempx - initx;
-        pt.x = inity - tempy;
-        counter++;
-        trajectory_pub.publish(pt);
+        if (counter < 0){
+        	ROS_INFO("counter less than 0");
+        } else {
+			vector<double> row = traj[counter];
+        	double tempx = row[0] / 100;
+        	double tempy = row[1] / 100;
+
+
+        	// astar use following
+        	pt.x = tempx - initx;
+        	pt.y = tempy - inity;
+
+        	// path smooth use folloing
+        	// pt.y = tempx - initx;
+        	// pt.x = inity - tempy;
+
+        
+        	trajectory_pub.publish(pt);
+        }
+		
+		counter++;
         loop_rate.sleep();
     }
     ROS_INFO("end publishing");
