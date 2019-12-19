@@ -47,11 +47,11 @@ def timerCallback():
 	print(linear)
 	print(angular) 
 	global twist
-	twist.linear.x = linear*0.2
-	twist.angular.z = angular*0.2
+	twist.linear.x = linear*0.5
+	twist.angular.z = angular*0.5
 
-	max_linear_v = 0.5
-	max_angular_v = 0.5
+	max_linear_v = 1
+	max_angular_v = 1
 
 	if(abs(twist.linear.x) > max_linear_v):
 		twist.linear.x =  max_linear_v * twist.linear.x / abs(twist.linear.x)

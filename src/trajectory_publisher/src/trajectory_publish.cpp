@@ -8,7 +8,9 @@
 
 using namespace std;
 
-const string fp = "/home/gg/catkin_gx_ws/src/trajectory_publisher/realexpMap1-astar.csv";
+//const string fp = "/home/gg/catkin_gx_ws/src/trajectory_publisher/realexpMap1-astar.csv";
+const string fp = "/home/gg/catkin_gx_ws/src/trajectory_publisher/realExpriment1-smooth.csv";
+
 
 ros::Publisher trajectory_pub;
 vector <vector<double>> traj;
@@ -37,7 +39,7 @@ void csvParser(const string &filename, vector <vector<double>> &result) {
 
 int main(int argc, char **argv) {
 	int counter = 0;
-	float hz = 10;
+	float hz = 20;
     ros::init(argc, argv, "publish_tragectory");
     ros::NodeHandle nh;
     trajectory_pub = nh.advertise<geometry_msgs::Point>("ring_buffer/desire_point", 10);
@@ -65,13 +67,13 @@ int main(int argc, char **argv) {
         	double tempy = row[1] / 100;
 
 
-        	// astar use following
-        	pt.x = tempx - initx;
-        	pt.y = tempy - inity;
+        	// // astar use following
+        	// pt.x = tempx - initx;
+        	// pt.y = tempy - inity;
 
         	// path smooth use folloing
-        	// pt.y = tempx - initx;
-        	// pt.x = inity - tempy;
+        	pt.y = tempx - initx;
+        	pt.x = inity - tempy;
 
         
         	trajectory_pub.publish(pt);
